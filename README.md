@@ -28,66 +28,84 @@ This repository contains scripts for setting up a Kubernetes cluster using Multi
     └── ssh-cka-node1.sh  # SSH into worker node
 ```
 
-## Quick Start
+## Quick Start Guide
 
-1. Launch the VMs:
+### 1. Launch Virtual Machines
 ```bash
 cd multipass
 ./lanuch-2vm.sh
 ```
 
-2. SSH into the master node:
+### 2. Configure Master Node
+1. SSH into the master node:
 ```bash
 ./ssh-cka-master.sh
 ```
 
-3. On the master node, run the installation scripts:
+2. Clone the repository and run installation scripts:
 ```bash
-cd /home/ubuntu/cka-master
-./install-all.sh
-./kubeadm-init.sh
+git clone https://github.com/JimmiHsieh/cka-kubernetes
+cd cka-kubernetes/cka-master
+chmod +x * && ./install-all.sh
 ```
 
-4. SSH into the worker node:
+3. Deploy Flannel CNI:
+```bash
+kubectl apply -f https://github.com/flannel-io/flannel/releases/download/v0.26.5/kube-flannel.yml
+```
+
+### 3. Configure Worker Node
+1. SSH into the worker node:
 ```bash
 ./ssh-cka-node1.sh
 ```
 
-5. On the worker node, run the installation scripts:
+2. Clone the repository and run installation scripts:
 ```bash
-cd /home/ubuntu/cka-nodes
-./install-all.sh
+git clone https://github.com/JimmiHsieh/cka-kubernetes
+cd cka-kubernetes/cka-nodes
+chmod +x * && ./install-all.sh
 ```
 
-## Configuration Details
+## System Configuration
 
-### Kubernetes Version
+### Kubernetes Setup
 - Version: 1.32
-
-### Network Configuration
-- Pod Network CIDR: 10.244.0.0/16
 - Container Runtime: containerd
 - SystemdCgroup: enabled
 
-### VM Specifications
+### Network Configuration
+- Pod Network CIDR: 10.244.0.0/16
+- CNI: Flannel
+- Network Interface: en0 (configurable)
+
+### Virtual Machine Resources
 - Master Node: 2 CPUs, 2GB RAM
 - Worker Node: 2 CPUs, 2GB RAM
-- Network: Using host network (en0)
+
+## Important Notes
+
+### Prerequisites
+- All scripts require sudo privileges
+- Designed for Ubuntu-based systems
+- Ensure sufficient disk space for VM creation
+
+### Configuration
+- Update network interface name in `kubeadm-init.sh` (default: enp0s1)
+- Modify Pod CIDR in `kubeadm-init.sh` if needed (default: 10.244.0.0/16)
+
+### Troubleshooting
+- If VMs fail to start, check Multipass installation
+- For network issues, verify interface names in scripts
+- Ensure all scripts have execute permissions
 
 ## Cleanup
 
-To remove all VMs and clean up:
+To remove all VMs and clean up resources:
 ```bash
 cd multipass
 ./destroy.sh
 ```
-
-## Notes
-
-- The scripts are designed for Ubuntu-based systems
-- All scripts require sudo privileges
-- Make sure to replace the IP address in `kubeadm-init.sh` with your master node's IP
-- The setup is optimized for CKA exam preparation
 
 ## License
 
