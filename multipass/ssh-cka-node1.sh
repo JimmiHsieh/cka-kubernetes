@@ -1,0 +1,1 @@
+multipass shell cka-node1
