@@ -1,6 +1,7 @@
-MY_IP=192.168.65.27
+IP_ADDR=$(ip addr show enp0s1 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 
-sudo kubeadm init --apiserver-advertise-address=${MY_IP} --pod-network-cidr="10.244.0.0/16" --upload-certs
+
+sudo kubeadm init --apiserver-advertise-address=${IP_ADDR} --pod-network-cidr="10.244.0.0/16" --upload-certs
 
 
 mkdir -p $HOME/.kube
