@@ -1,18 +1,6 @@
 #!/usr/bin/env bash
 K8S_VERSION=1.32
 
-# sudo modprobe br_netfilter
-# sudo echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
-# sudo echo 1 > /proc/sys/net/ipv4/ip_forward
-
-
-# cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-# net.bridge.bridge-nf-call-ip6tables = 1
-# net.bridge.bridge-nf-call-iptables = 1
-# EOF
-# sudo sysctl --system
-
-
 # APT Install Packages 
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg

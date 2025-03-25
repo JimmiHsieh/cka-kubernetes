@@ -2,3 +2,4 @@
 
 ./install.sh
 ./containerd.sh
+./kubeadm-init.sh
